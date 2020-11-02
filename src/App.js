@@ -1,33 +1,44 @@
 import React, { useState } from 'react';
-// import TodoList from './TodoList';
 
 export default function App() {
 
-  const [list, addItem] = useState([]);
-  const [item, setInput] = useState();
+  const [todoList, setTodoList] = useState([]);
+  const [userInput, setUserInput] = useState('');
 
-  let onSubmit = event => {
-    event.preventDefault();
-    list.push(item);
-    console.log(list);
-    setInput('');
-  }
+  let onSubmit = () => {
+    todoList.push(userInput);
+    setTodoList(todoList);
+    setUserInput('');
+  };
+
+  let deleteItem = index => {
+    let tempList = [...todoList]
+    tempList.splice(index, 1);
+    setTodoList(tempList);
+  };
+
+
 
   return (
- 
     <div>
-      <form>
         <label>
-          Add item
-          <input type="text" name='item' onChange={(event) => setInput(event.target.value)} value={item} />
+        Add item
+          <input type="text" name='userInput' onChange={(event) => setUserInput(event.target.value)} value={userInput} />
         </label>
-        <button type="submit" onClick={onSubmit}> Submit </button>
-      </form>
-      {list.length > 0 ? <h1>TODO LIST</h1> : null}
-      {list.map((items) => <li>{items}</li>)}
+      <button type="submit" onClick={onSubmit}> Submit </button>
 
+      {todoList.length > 0 ? <h1>TODO LIST</h1> : null}
 
-      {/* <TodoList todoList={list} /> */}
+      <div>
+        {todoList.map((todoItem, index) =>
+          <div key={index}>
+            <li>{todoItem}</li>
+            <button onClick={() => deleteItem(index)}>Delete</button>
+            <button>Done</button>
+          </div>
+        )} 
+      </div>
+      
     </div>
   )
 }
