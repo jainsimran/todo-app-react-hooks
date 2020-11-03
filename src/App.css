@@ -1,0 +1,12 @@
+.lineThrough{
+  text-decoration: line-through;
+}
+
+#task{
+  display: flex;
+  margin: 10px 0;
+}
+
+div, button, input{
+  margin: 0 10px;
+}

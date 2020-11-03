@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './App.css';
 
 export default function App() {
 
@@ -6,8 +7,8 @@ export default function App() {
   const [userInput, setUserInput] = useState('');
 
   let onSubmit = () => {
-    todoList.push(userInput);
-    setTodoList(todoList);
+    let tempList = [...todoList, {userInput, done: false}]; // copying todoList by value using spread operator
+    setTodoList(tempList);
     setUserInput('');
   };
 
@@ -17,27 +18,33 @@ export default function App() {
     setTodoList(tempList);
   };
 
+  let completeItem = index => {
+    let tempArray = [...todoList];
+    tempArray[index].done = !tempArray[index].done;
+    setTodoList(tempArray);
+  };
+
 
 
   return (
     <div>
         <label>
-        Add item
+        Add task 
           <input type="text" name='userInput' onChange={(event) => setUserInput(event.target.value)} value={userInput} />
         </label>
       <button type="submit" onClick={onSubmit}> Submit </button>
 
       {todoList.length > 0 ? <h1>TODO LIST</h1> : null}
 
-      <div>
+      <ol>
         {todoList.map((todoItem, index) =>
-          <div key={index}>
-            <li>{todoItem}</li>
+          <div key={index} id='task' className={todoList[index].done ? 'lineThrough' : null}>
+            <li>{todoItem.userInput}</li>
             <button onClick={() => deleteItem(index)}>Delete</button>
-            <button>Done</button>
+            <button onClick={() => completeItem(index)}> {todoList[index].done ? 'Undone' : 'Done'} </button>
           </div>
         )} 
-      </div>
+      </ol>
       
     </div>
   )
